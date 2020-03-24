@@ -6,7 +6,7 @@ Robot que ordena paquetes en diferentes pasillos de un almacén.
 
 Hugo, Lopez Janquin. Número de matrícula: 54703. Usuario GitHub: hugolopezjanquin.
 
-Zeqi, Lin. Número de matrícula: 54694. Usuario GitHub: zeqilin
+Zeqi, Lin. Número de matrícula: 54694. Usuario GitHub: zeqilin.
 
 ## Objetivos del trabajo
 
