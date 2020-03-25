@@ -14,7 +14,11 @@ Utilizar conocimientos aprendidos en clase como es aprender a programar en lengu
 
 ## Sensores y actuadores
 -Arduino(arduino uno rev 3)
+
 -Servomotor (micro servo 9G SG90)
+
 -Motor de corriente continua con reductora
+
 -Sensor infrarrojo (módulo TCRT5000)
+
 -Puente H (Módulo controlador de motores L298N)
