@@ -1,6 +1,6 @@
 # Título del trabajo
 
-Gestion de inventario y robot que ordena paquetes.
+Compra/venta de un inventario y robot que ordena paquetes.
 
 ## Integrantes del equipo
 
