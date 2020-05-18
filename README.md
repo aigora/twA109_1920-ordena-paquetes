@@ -24,3 +24,6 @@ El software del robot sera Arduino, a este robot se le dara las ordenes de mover
 - Sensor infrarrojo (módulo TCRT5000)
 
 - Puente H (Módulo controlador de motores L298N)
+## Directorios
+>Codigos_Prueba. son diversos codigos de prueba para comprobar como funcionan ciertos componentes en arduino o como se ejecuta un porgrama en C.
+>PuertoSerie. codigos para probar como se pueden mandar y recibir datos con la conexión puerto serie entre arduino y C. Donde el programa C se encarga mandar datos para que arduino pueda mover el robot, mientras C no sigue ejecutando el codigo hasta que arduino le diga que ha acabado.
