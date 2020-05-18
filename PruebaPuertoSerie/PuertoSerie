@@ -1,2 +1,0 @@
-Estos codigos en este directorio, son codigos de prueba para probar la conexión puerto serie entre arduino y C.
-Donde el programa C manda datos para que arduino pueda mover el robot, mientras C no sigue ejecutando el codigo hasta que arduino le diga que ha acabado.
