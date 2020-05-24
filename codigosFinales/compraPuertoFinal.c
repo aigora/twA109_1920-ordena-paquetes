@@ -319,7 +319,7 @@ void compraRobot(int pasillo, SerialPort *arduino, char *incomingData){
 		printf("Realizando compra...\n");
 		do{
 			int n = readSerialPort(arduino, incomingData, 1);
-		}while(n==0 || *incomingData != inicio);			//el programa en C no continua hasta que el robot vuelva al inicio
+		}while(*incomingData != pasillo);			//el programa en C no continua hasta que el robot vuelva al inicio
 		
 		printf("Compra acabada.\n");
 		return;
