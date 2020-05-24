@@ -419,7 +419,7 @@ int isConnected(SerialPort *PuertoSerie){
 //funciones para el robot para que añada un nuevo producto
 void reponer(int pasillo, SerialPort *arduino, char *incomingData){
 	char sendData;
-	int n, inicio = -1;
+	int n;
 	
 	while(!isConnected(arduino)){
 		Sleep(100);
@@ -437,7 +437,7 @@ void reponer(int pasillo, SerialPort *arduino, char *incomingData){
 		printf("Realizando reparto...\n");
 		do{
 			int n = readSerialPort(arduino, incomingData, 1);
-		}while(n==0 || *incomingData != inicio);						//el programa en C no continua hasta que arduino no complete su orden
+		}while(*incomingData != pasillo);						//el programa en C no continua hasta que arduino no complete su orden
 		
 		printf("Reparto acabado.\n");
 		return;
@@ -448,7 +448,7 @@ void reponer(int pasillo, SerialPort *arduino, char *incomingData){
 
 void cambioPasillo(int pasillo,int nuevoPasillo,SerialPort *arduino,char *incomingData){
 	char sendData;
-	int n, inicio = -1;
+	int n;
 	
 	while(!isConnected(arduino)){
 		Sleep(100);
@@ -466,7 +466,7 @@ void cambioPasillo(int pasillo,int nuevoPasillo,SerialPort *arduino,char *incomi
 		printf("Empezando traslado...");
 		do{
 			int n = readSerialPort(arduino, incomingData, 1);
-		}while(n==0 || *incomingData != pasillo);					//ha llegado al pasillo empezamos cambio
+		}while(*incomingData != pasillo);					//ha llegado al pasillo empezamos cambio
 		
 		printf("Realizando traslado...");
 		sendData = (char)nuevoPasillo;
@@ -475,7 +475,7 @@ void cambioPasillo(int pasillo,int nuevoPasillo,SerialPort *arduino,char *incomi
 		}
 		do{
 			int n = readSerialPort(arduino, incomingData, 1);
-		}while(n==0 || *incomingData != inicio);					//mover paquete recogido al nuevo pasillo
+		}while(*incomingData != nuevoPasillo);					//mover paquete recogido al nuevo pasillo
 		
 		printf("Traslado acabado.\n");
 		return;
