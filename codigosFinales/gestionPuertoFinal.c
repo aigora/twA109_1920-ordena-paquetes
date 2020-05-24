@@ -101,7 +101,7 @@ void cargarinventario(modeloprod prod[],int *pn){
 	else{
 		while(fgets(Cadena_aux, L, inventario) != NULL){		//lee primera linea del fichero y empieza un bucle while que no acaba hasta llegar al final del fichero
 			ptrtoken = strtok(Cadena_aux, ";");			//divide la cadena con el separador ;
-       		strcpy(prod[n].nombre, ptrtoken);			//una vez dividida copia el primer trozo de la cadena que es el nombre del producto
+       			strcpy(prod[n].nombre, ptrtoken);			//una vez dividida copia el primer trozo de la cadena que es el nombre del producto
 			ptrtoken = strtok(NULL, ";");				//vuelve a dividir la cadena hasta llegar al siguiente ; que se convertira en NULL
 			prod[n].pasillo = atoi(ptrtoken);			//convertimos la cadena en un entero
 			ptrtoken = strtok(NULL, ";");				//vuelve a dividir la cadena hasta llegar al siguiente ; que se convertira en NULL
@@ -134,6 +134,7 @@ int menu(){
 	return opcion;
 }
 
+//añade un nuevo producto al inventario
 void nuevo(modeloprod prod[], int *pn, SerialPort *arduino, char *incomingData){
 	char num;
 	
@@ -163,13 +164,14 @@ void nuevo(modeloprod prod[], int *pn, SerialPort *arduino, char *incomingData){
 			printf("ERROR! Repita cantidad ha introducir en el almacen: ");
 			scanf("%d", &prod[*pn].cantidad);
 		}
-		//reponer(prod[*pn].pasillo, arduino, incomingData);		//empezamos funcion de reponer para a�adir el nuevo producto
-		(*pn)++;					//a�adimos un nuevo producto al total
+		reponer(prod[*pn].pasillo, arduino, incomingData);		//empezamos funcion de reponer para añadir el nuevo producto
+		(*pn)++;							//añadimos un nuevo producto al total
 	}
 	else
 		printf ("Almacen completo\n");
 	}
 
+//funcion para eliminar productos del inventario
 void eliminar(modeloprod prod[], int *pn, SerialPort *arduino, char *incomingData){			
 	int i,numero;
 	char opcion;
@@ -248,7 +250,7 @@ void editar(modeloprod prod[], int n, SerialPort *arduino, char *incomingData){
 					prod[numero].precio = nprecio;
 					break;
 				case 4:
-					printf("Introduce cantidad a a�adir al pasillo.");
+					printf("Introduce cantidad a añadir al pasillo.");
 					scanf("%d", &ncantidad);
 					prod[numero].cantidad+=ncantidad;
 					reponer(prod[numero].pasillo, arduino, incomingData);						//Creamos funcion para mover el producto a un pasillo distino y llamamos a Arduino
@@ -259,6 +261,8 @@ void editar(modeloprod prod[], int n, SerialPort *arduino, char *incomingData){
 		printf("El producto no existe en el inventario.\n");
 }
 
+
+//muestra en pantalla todos los productos
 void listar(modeloprod prod[],int n){
 	int i;
 	printf("\nRegistro del almacen.\n");
@@ -291,7 +295,7 @@ void buscar(modeloprod prod[],int n){
 
 int comparar(char c1[], char c2[]){
 	int bandera = 1, i;							//Suponemos al principio que son iguales
-	for(i=0; c1[i] != '\0' && c2[i] != '\0' && bandera == 1; i++){
+	for(i=0; c1[i] != '\0' && c2[i] != '\0' && bandera == 1; i++){		//comparamos cada caracter de ambas cadenas
 		if(c1[i] != c2[i])
 			bandera = 0;
 	}
@@ -310,15 +314,15 @@ void guardarinventario(modeloprod prod[],int n){
 		for(i=0; i<n; i++){
 		 	fputs(prod[i].nombre, inventario);
 		 	fprintf(inventario,";");
-            fprintf(inventario,"%d;", prod[i].pasillo);
-            fprintf(inventario,"%.2f;", prod[i].precio);
-            fprintf(inventario,"%d\n", prod[i].cantidad);
+           		fprintf(inventario,"%d;", prod[i].pasillo);
+            		fprintf(inventario,"%.2f;", prod[i].precio);
+            		fprintf(inventario,"%d\n", prod[i].cantidad);
 		}	
 		fclose(inventario);
 	}
 }
 
-
+//declaracion funciones de comunicacion puerto serie
 void Crear_Conexion(SerialPort *PuertoSerie, char *portName)
 {
 
@@ -412,6 +416,7 @@ int isConnected(SerialPort *PuertoSerie){
     return PuertoSerie->connected;
 }
 
+//funciones para el robot para que añada un nuevo producto
 void reponer(int pasillo, SerialPort *arduino, char *incomingData){
 	char sendData;
 	int n, inicio = -1;
