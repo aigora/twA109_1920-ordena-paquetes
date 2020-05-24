@@ -34,7 +34,7 @@ typedef struct
 typedef enum{
 	inicio,
 	comprobar,			//comprueba si hay la cantidad necearia de dinero
-	anadir,				//si falta por añadir dinero pide más
+	anadir,				//si falta por aÃ±adir dinero pide mÃ¡s
 }estado;
 
 void *cargarinventario(modeloprod [], int *);
@@ -98,7 +98,7 @@ void *cargarinventario(modeloprod prod[],int *pn){
 			ptrtoken = strtok(NULL, ";");				//vuelve a dividir la cadena hasta llegar al siguiente ; que se convertira en NULL
 			prod[n].pasillo = atoi(ptrtoken);			//convertimos la cadena en un entero
 			ptrtoken = strtok(NULL, ";");				//vuelve a dividir la cadena hasta llegar al siguiente ; que se convertira en NULL
-			prod[n].precio = atoi(ptrtoken);
+			prod[n].precio = atof(ptrtoken);			//convierte la cadena en float
 			ptrtoken = strtok(NULL, ";");
 			prod[n].cantidad = atoi(ptrtoken);
 			n++;
@@ -112,7 +112,7 @@ void guardarinventario(modeloprod prod[],int n){
 	int i;
 	FILE *inventario;
 	
-	inventario = fopen ("inventario.txt","wt");
+	inventario = fopen ("inventario.txt","wt");			//guarda las modificaciones
 	
 	if(inventario == NULL)
 		printf("No se ha podido guardar el inventario.\n");
@@ -120,9 +120,9 @@ void guardarinventario(modeloprod prod[],int n){
 		for(i=0; i<n; i++){						//como sigue la estructura de archivo csv hay que volver a escribir los ;
 		 	fputs(prod[i].nombre, inventario);
 		 	fprintf(inventario,";");
-            fprintf(inventario,"%d;", prod[i].pasillo);
-            fprintf(inventario,"%.2f;", prod[i].precio);
-            fprintf(inventario,"%d\n", prod[i].cantidad);
+           		fprintf(inventario,"%d;", prod[i].pasillo);
+            		fprintf(inventario,"%.2f;", prod[i].precio);
+            		fprintf(inventario,"%d\n", prod[i].cantidad);
 		}	
 		fclose(inventario);
 	}
@@ -183,7 +183,7 @@ float comprar(modeloprod prod[], monedas euros[],int n, int numMoneda, float *di
 				break;
 					}
 				case anadir:
-						printf("\nAñade mas dinero...	");
+						printf("\nAÃ±ade mas dinero...	");
 						scanf("%f", &extra);
 						suma += extra + introducido;					//el usuario tiene la oportunidad de aportar mas dinero, puede cancelar la compra introduciendo nada o un numero negativo
 						if(extra == 0 || extra < 0){
@@ -192,7 +192,7 @@ float comprar(modeloprod prod[], monedas euros[],int n, int numMoneda, float *di
 								return;
 							}
 						while(suma < prod[num].precio){
-							if(extra>0 && suma<=prod[num].precio){		//si sigue faltando pide más dinero
+							if(extra>0 && suma<=prod[num].precio){		//si sigue faltando pide mÃ¡s dinero
 								printf("Mas dinero...	");
 								scanf("%f", &extra);
 								suma += extra;
@@ -206,8 +206,9 @@ float comprar(modeloprod prod[], monedas euros[],int n, int numMoneda, float *di
 	}
 }
 
-void Crear_Conexion(SerialPort *PuertoSerie, char *portName)
-{
+
+//definicion de las funciones para estbalecer comunicacion puerto serie
+void Crear_Conexion(SerialPort *PuertoSerie, char *portName){
 
 	PuertoSerie->connected = 0;
 	PuertoSerie->portName = portName;
@@ -299,6 +300,8 @@ int isConnected(SerialPort *PuertoSerie){
     return PuertoSerie->connected;
 }
 
+
+//funcion que permite recoger con el reobot el producto comprado
 void compraRobot(int pasillo, SerialPort *arduino, char *incomingData){
 	char sendData;
 	int n, inicio = -1;
@@ -309,14 +312,14 @@ void compraRobot(int pasillo, SerialPort *arduino, char *incomingData){
 	}
 		
 	while(isConnected(arduino)){
-		sendData = (char) pasillo;
+		sendData = (char) pasillo;					//manda donde se encuentra el producto
 		if(!writeSerialPort(arduino, &sendData, sizeof(char))){
 			printf("Error mandando orden.\n");
 		}
 		printf("Realizando compra...\n");
 		do{
 			int n = readSerialPort(arduino, incomingData, 1);
-		}while(n==0 || *incomingData != inicio);						//el programa en C no continua hasta que arduino no complete su orden
+		}while(n==0 || *incomingData != inicio);			//el programa en C no continua hasta que el robot vuelva al inicio
 		
 		printf("Compra acabada.\n");
 		return;
@@ -330,7 +333,7 @@ void cargarmonedas(monedas euros[],int *pn){
 	FILE *monedasEuro;
 	char *ptrtoken = malloc(sizeof(char)), Cadena_aux[L];
 	
-	n=0;												//Iniciamos un contador de productos
+	n=0;									
 	
 	monedasEuro = fopen("monedas.txt","rt");
 	
@@ -338,11 +341,11 @@ void cargarmonedas(monedas euros[],int *pn){
 		printf("El fichero no existe\n");
 	else{
 		while(fgets(Cadena_aux, L, monedasEuro) != NULL){		//lee primera linea del fichero y empieza un bucle while que no acaba hasta llegar al final del fichero
-			ptrtoken = strtok(Cadena_aux, ";");	
+			ptrtoken = strtok(Cadena_aux, ";");			//divide la primera linea por el seprador del csv el ;
 			euros[n].euros = atof(ptrtoken);
 			ptrtoken = strtok(NULL, ";");
 			euros[n].cantidad = atoi(ptrtoken);
-			n++;
+			n++;							//no hemos definido la dimension del fichero por si se quieren meter billetes
 		}
 		fclose(monedasEuro);
 		}
