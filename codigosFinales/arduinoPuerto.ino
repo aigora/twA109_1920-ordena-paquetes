@@ -32,7 +32,7 @@ void setup() {
   pinMode(enb, OUTPUT);
   pinMode(11, INPUT);
   pinMode(12, INPUT);
-  mi_servo.attach(9);
+  mi_servo.attach(4);
   Velocidad = 50;
   Serial.begin(9600);
 }
