@@ -25,6 +25,7 @@ El software del robot sera Arduino, a este robot se le dara las ordenes de mover
 
 - Puente H (Módulo controlador de motores L298N)
 ## Directorios
-- podigos_prueba. son diversos codigos de prueba para comprobar como funcionan ciertos componentes en arduino o como se ejecuta un porgrama en C.
+- codigos_prueba. son diversos codigos de prueba para comprobar como funcionan ciertos componentes en arduino o como se ejecuta un porgrama en C.
 - PruebaPuertoSerie. codigos para probar como se pueden mandar y recibir datos con la conexión puerto serie entre arduino y C. Donde el programa C se encarga mandar datos para que arduino pueda mover el robot, mientras C no sigue ejecutando el codigo hasta que arduino le diga que ha acabado.
 - diseño_3. son stls de para imprimirlas en 3D y con ellas construir el chasis del robot.
+- codigosFinales. se adjutan todos las versiones finales de todos los códigos junto a los documentos.txt para su funcionamiento. Además de la documentación de todo el trabajo.
