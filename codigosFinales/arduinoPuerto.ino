@@ -1,3 +1,7 @@
+#include <Servo.h>
+
+Servo mi_servo;
+
 double Velocidad;
 
 int sensorDer;
@@ -28,6 +32,7 @@ void setup() {
   pinMode(enb, OUTPUT);
   pinMode(11, INPUT);
   pinMode(12, INPUT);
+  mi_servo.attach(9);
   Velocidad = 50;
   Serial.begin(9600);
 }
@@ -72,6 +77,10 @@ void pasilloDetectado(){
     digitalWrite(in1,LOW);
     digitalWrite(in2,HIGH);
     analogWrite(ena,(0));
+    delay(1000);
+    mi_servo.write(180);
+    delay(1000);
+    mi_servo.write(0);
 }
 
 void retroceder(){
@@ -86,9 +95,9 @@ void retroceder(){
 int pasilloDeseado(){
    int pasillo=0, contador;
    contador=0;
-  //while(!Serial.available());
+  while(!Serial.available());
     contador--;
-    pasillo = 3; //Serial.read();
+    pasillo = Serial.read();
    
     while(contador != pasillo){
       sensorDer = digitalRead(11);                   /*cable blanco*/
@@ -112,7 +121,6 @@ int pasilloDeseado(){
           delay(550);
           if(contador == pasillo){          //si llega al pasillo deseado se para
           pasilloDetectado();
-          Serial.write(contador);   //manda el contador a C para decir que ha acabado
   }
       }
   }
@@ -145,7 +153,7 @@ void volverInicio(int pasillo){
           avanzar();
           if(contador == inicio){          //si llega al pasillo deseado se para
           pasilloDetectado();
-          //Serial.write(pasillo);   //manda el contador a C para decir que ha acabado
+          Serial.write(pasillo);   //manda el contador a C para decir que ha acabado
   }
   }
   }
